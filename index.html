@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Cover</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        video {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🎶 Cover para la Maestra 🎶</h2>
+        <video controls>
+            <source src="cover.mp4" type="video/mp4">
+            Tu navegador no soporta videos.
+        </video>
+        <br>
+        
+        <h3>⭐ Califique el cover:</h3>
+        <select id="puntuacion">
+            <option value="">Seleccione...</option>
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+            <option value="2.5">2.5</option>
+            <option value="3">3</option>
+        </select>
+
+        <br><br>
+        <button onclick="enviarPuntuacion()">Enviar Puntuación</button>
+    </div>
+
+    <script>
+        let phone = "50237246407";  // Tu número de WhatsApp
+
+        // Cargar puntuación guardada
+        document.addEventListener("DOMContentLoaded", function () {
+            let puntuacionGuardada = localStorage.getItem("puntuacion");
+            if (puntuacionGuardada) {
+                document.getElementById("puntuacion").value = puntuacionGuardada;
+            }
+        });
+
+        function enviarPuntuacion() {
+            let seleccion = document.getElementById("puntuacion").value;
+
+            if (!seleccion) {
+                alert("Por favor, seleccione una puntuación.");
+                return;
+            }
+
+            // Guardar la puntuación en el navegador de la maestra
+            localStorage.setItem("puntuacion", seleccion);
+
+            // Mensaje de broma si la puntuación es menor a 2.5
+            if (seleccion < 2.5) {
+                let confirmacion = confirm("Vamos seño, ponga siquiera un 2.5 🥺. ¿Plis?");
+                if (!confirmacion) {
+                    alert("Está bien seño, respeto su decisión. 😔");
+                }
+            }
+
+            // Mensaje final antes de redirigir a WhatsApp
+            alert("Usted será redirigida a WhatsApp donde puede enviar su puntuación. Gracias.");
+
+            // Crear mensaje de WhatsApp
+            let mensaje = encodeURIComponent("Su puntuación es " + seleccion);
+            window.location.href = `https://wa.me/${phone}?text=${mensaje}`;
+        }
+    </script>
+
+</body>
+</html>
